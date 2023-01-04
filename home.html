@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Weather</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .container .box {
+            min-width: 21vw;
+            height: 365px;
+            margin: auto auto;
+            margin-bottom: 0px;
+            background-color: #d0aad4d4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 1px 1px 10px #b18181;
+            top: -88px;
+        }
+
+        .container .box .wave {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #8cdede;
+        }
+
+        .container .box .one {
+            height: 337px;
+            width: 401px;
+            z-index: 2;
+            top: 137px;
+            left: 82px;
+            animation: rotWave 6s infinite linear;
+        }
+
+        .container .box .two {
+            height: 426px;
+            width: 374px;
+            top: 130px;
+            animation: rotWave 6s infinite linear;
+            left: -44px;
+            z-index: 1;
+        }
+
+        .container .box .three {
+            height: 454px;
+            width: 528px;
+            top: 178px;
+            animation: rotWave 6s infinite linear;
+            left: -225px;
+        }
+
+        @keyframes rotWave {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .container .box #weathercondition {
+            width: 9rem;
+            height: 9rem;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+        }
+
+        #sun:before {
+            font-size: 3rem;
+            animation: sunBlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes sunBlow {
+            from {
+                font-size: 2.8rem;
+            }
+
+            to {
+                font-size: 4rem;
+            }
+        }
+
+        .container .box .info {
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 15rem;
+            height: 13rem;
+        }
+
+        .fa-street-view:before {
+            margin-right: 10px;
+        }
+
+        .container .box .info p {
+            font-family: 'Kanit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .container .box .info h1,
+        .container .box .info h2 {
+            font-size: 20px;
+            font-family: 'Cabin', sans-serif;
+        }
+
+        .container .box .info h3 {
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="wave one"></div>
+            <div class="wave two"></div>
+            <div class="wave three"></div>
+
+            <div id="weathercondition">
+                <i class="fa-solid fa-sun" id="sun" style="color:#eccc68"></i>
+            </div>
+
+            <div class="info">
+                <h2 class="location"><i class="fa-solid fa-street-view"></i>{%location%},{%country%}</h2>
+                <p id="date">
+                    <span id="d1">WED </span>
+                    &nbsp;|&nbsp;
+                    <span id="d2">OCT 23</span>
+                    &nbsp;|&nbsp;
+                    <span id="d3">10:49 AM</span>
+                </p>
+                <h1 class="temp">{%tempval%}</h1>
+                <h3 class="tempmin_max">Min {%tempmin%} | Max {%tempmax%}</h3>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const d1 = document.getElementById('d1');
+    const d2 = document.getElementById('d2');
+    const d3 = document.getElementById('d3');
+    const weathercondition = document.getElementById('weathercondition');
+
+    const tempStatus = "{%tempstatus%}";
+
+    //condition to check sunny or cloudy
+    if (tempStatus == "Sunny") {
+        weathercondition.innerHTML =
+            "<i class='fas  fa-sun' id='sun' style='color: #eccc68;'></i>";
+    } else if (tempStatus == "Clouds") {
+        weathercondition.innerHTML =
+            "<i class='fa-solid fas fa-cloud' id='sun' style='color: #f1f2f6;'></i>";
+    } else if (tempStatus == "Rainy") {
+        weathercondition.innerHTML =
+            "<i class='fas fa-cloud-rain' id='sun' style='color: #a4b0be;'></i>";
+    } else {
+        weathercondition.innerHTML =
+            "<i class='fas  fa-cloud' id='sun' style='color:#f1f2f6;'></i>";
+    }
+
+    const weekday = ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"];
+    const months = ["JAN", "FAB", "MAR", "APRIL", "MAY", "JUNE", "JULY", "AUG", "SEPT", "OCT", "NOV", "DEC"];
+
+    GetDate = () => {
+
+        //new instance of date
+        let now = new Date();
+
+        //DAY
+        let day = weekday[now.getDay()];
+
+        //MONTH DAY
+        let month = months[now.getMonth()];
+        let date = now.getDate();
+
+        //HOURS MINS
+        let hours = now.getHours();
+        let mins = now.getMinutes();
+
+        //AM/PM
+        let periods = "AM";
+
+        if (hours > 11) {
+            periods = "PM";
+
+            if (hours > 12) { hours -= 12; }
+
+        }
+
+        if (mins < 10) { mins = '0' + mins; }
+        if (hours < 10) { hours = '0' + hours; }
+        if (date < 10) { date = '0' + date; }
+
+        d1.innerHTML = day;
+        d2.innerHTML = month + " " + date;
+        d3.innerHTML = hours + ':' + mins + ' ' + periods;
+    }
+
+    let out = setInterval(GetDate, 1000);
+</script>
+
+</html>
